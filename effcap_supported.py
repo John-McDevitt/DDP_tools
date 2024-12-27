@@ -36,7 +36,7 @@ def parse_arguments():
     parser.add_argument('-v', "--verbose", action='count',default=0)
     parser.add_argument("--logfile", type=str)
     args = parser.parse_args()
-    args.program_name=sys.argv[0]
+    args.program_name=os.path.basename(sys.argv[0])
     return args
 
 def setup_log():
@@ -101,9 +101,14 @@ def calculate(event=''):
     # DRS metadata is 6% of effective
     # usable = (1.07 * effective / ratio) + 0.06 * effective
     # effective = ratio * usable / ((ratio * 0.06) + 1.07)
+    # DRD metadata is 3% of effective
+    # effective = ratio * usable / ((ratio * 0.03) + 1.07)
     effective = attainment_ratio.get() * useable_cap.get() / ((attainment_ratio.get() * 0.06) + 1.07)
-    ttk.Label(window,text="Effective Capacity", width=20).grid(row=3,column=0,sticky=W)
-    ttk.Label(window,text=str(round(effective,2))).grid(row=3,column=1)
+    DRD_effective = attainment_ratio.get() * useable_cap.get() / ((attainment_ratio.get() * 0.03) + 1.07)
+    
+    #ttk.Label(window,text="Effective Capacity", width=20).grid(row=3,column=0,sticky=W)
+    ttk.Label(window,text=str(round(effective,2)),width=10).grid(row=3,column=1)
+    ttk.Label(window,text=str(round(DRD_effective,2)),width=10).grid(row=4,column=1)
     
 
 
@@ -136,10 +141,11 @@ if __name__ == '__main__':
 
     ttk.Label(window,text="Usable Capacity", width=20).grid(row=1,column=0,sticky=W)
     ttk.Label(window,text="Attainment Ratio", width=20).grid(row=2,column=0,sticky=W)
-    ttk.Label(window,text="Effective Capacity", width=20).grid(row=3,column=0,sticky=W)
-    ttk.Entry(window,textvariable=useable_cap,width=6).grid(row=1,column=1,sticky=E)
-    ttk.Entry(window,textvariable=attainment_ratio,width=6).grid(row=2,column=1,sticky=E)
-    ttk.Button(window,text="Calculate",command=calculate).grid(row=4,columnspan=2)
+    ttk.Label(window,text="DRS Effective Capacity", width=20).grid(row=3,column=0,sticky=W)
+    ttk.Label(window,text="DRD Effective Capacity", width=20).grid(row=4,column=0,sticky=W)
+    ttk.Entry(window,textvariable=useable_cap,width=10).grid(row=1,column=1,sticky=E)
+    ttk.Entry(window,textvariable=attainment_ratio,width=10).grid(row=2,column=1,sticky=E)
+    ttk.Button(window,text="Calculate",command=calculate).grid(row=5,columnspan=2)
 
     window.mainloop()
 

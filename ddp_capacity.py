@@ -34,7 +34,7 @@ def parse_arguments():
     parser.add_argument('-v', "--verbose", action='count',default=0)
     parser.add_argument("--logfile", type=str)
     args = parser.parse_args()
-    args.program_name=sys.argv[0]
+    args.program_name=os.path.basename(sys.argv[0])
     return args
 
 def setup_log():
@@ -104,13 +104,15 @@ if __name__ == '__main__':
     "7.6TB-SSD",
     "15TB-SSD",
     "30TB-SSD",
+    "60TB-SSD",
     ]
     # Drive sizes (using GB found in maint manual, converted to GiB)
     DRIVE_CAP = {
         "3.8TB-SSD" : 3521.26,
         "7.6TB-SSD" : 7042.52,
         "15TB-SSD" : 14015.00,
-        "30TB-SSD" : 28028.99
+        "30TB-SSD" : 28028.99,
+        "60TB-SSD" : 56058.00
     }
    
     ADR_OPTIONS =[
